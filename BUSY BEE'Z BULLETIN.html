@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busy Bee's Bulletin</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb, #a18cd1, #fbc2eb, #fad0c4, #ff9a9e);
+            background-size: 400% 400%;
+            animation: gradientBackground 20s ease infinite;
+            overflow: hidden;
+            color: #333;
+        }
+	@keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+	}
+	{
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f9fc;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #000;
+        }
+
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        nav a {
+            margin: 0 20px;
+            text-decoration: none;
+            color: #000;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            color: #45a049;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none; /* Initially hide all sections */
+        }
+
+        .section h2 {
+            color: #333;
+        }
+
+        .task-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .task-input input,
+        .task-input select {
+            padding: 8px;
+            width: 80%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .task-input button {
+            padding: 8px 16px;
+            background-color: #717fa7;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .task-input button:hover {
+            background-color: #c5bcd5;
+        }
+
+        .task-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            margin: 5px 0;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-item button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .task-item button:hover {
+            background-color: #03c04a;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #777;
+        }
+
+        .task-item .edit-btn {
+            background-color: #008CBA;
+        }
+
+        .task-item .edit-btn:hover {
+            background-color: #007bb5;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Busy Bee's Bulletin</h1>
+        
+        <!-- Navigation -->
+        <nav>
+            <a href="javascript:void(0);" onclick="showPage('daily-schedule')">Daily Schedule</a>
+            <a href="javascript:void(0);" onclick="showPage('top-priorities')">Top Priorities</a>
+            <a href="javascript:void(0);" onclick="showPage('notes-ideas')">Notes & Ideas</a>
+            <a href="javascript:void(0);" onclick="showPage('monthly goals')">Monthly Goals</a>
+            <a href="javascript:void(0);" onclick="showPage('weekly-todo')">Weekly To-Do List</a>
+            <a href="javascript:void(0);" onclick="showPage('date')">Date</a>
+        </nav>
+
+        <!-- Daily Schedule Section -->
+        <div id="daily-schedule" class="section">
+            <h2>Daily Schedule</h2>
+            <div class="task-input">
+                <input type="text" id="daily-task-input" placeholder="Add a daily task...">
+                <input type="date" id="daily-task-date">
+                <button onclick="addTask('daily')">Add Task</button>
+            </div>
+            <ul id="daily-tasks" class="task-list"></ul>
+        </div>
+
+        <!-- Top Priorities Section -->
+        <div id="top-priorities" class="section">
+            <h2>Top Priorities</h2>
+            <div class="task-input">
+                <input type="text" id="priority-task-input" placeholder="Add a priority task...">
+                <input type="date" id="priority-task-date">
+                <button onclick="addTask('priority')">Add Task</button>
+            </div>
+            <ul id="priority-tasks" class="task-list"></ul>
+        </div>
+
+        <!-- Notes & Ideas Section -->
+        <div id="notes-ideas" class="section">
+            <h2>Notes & Ideas</h2>
+            <textarea id="notes-textarea" class="notes-textarea" placeholder="Write your ideas and notes here..."></textarea>
+        </div>
+
+        <!-- Today's Goals Section -->
+        <div id="monthly goals" class="section">
+            <h2>Monthly Goals</h2>
+            <div class="task-input">
+                <input type="text" id="goals-task-input" placeholder="Set your goals for a month...">
+                <input type="date" id="goals-task-date">
+                <button onclick="addTask('goals')">Add Goal</button>
+            </div>
+            <ul id="goals-tasks" class="task-list"></ul>
+        </div>
+
+        <!-- Weekly To-Do List Section -->
+        <div id="weekly-todo" class="section">
+            <h2>Weekly To-Do List</h2>
+            <div class="task-input">
+                <input type="text" id="weekly-task-input" placeholder="Add a weekly task...">
+                <input type="date" id="weekly-task-date">
+                <button onclick="addTask('weekly')">Add Task</button>
+            </div>
+            <ul id="weekly-tasks" class="task-list"></ul>
+        </div>
+
+        <!-- Date Section -->
+        <div id="date" class="section">
+            <h2>Choose a Date</h2>
+            <div class="task-input">
+                <input type="date" id="date-picker" />
+                <button onclick="showSelectedDate()">Show Selected Date</button>
+            </div>
+            <p id="selected-date"></p>
+        </div>
+
+    </div>
+
+    <script>
+        // Function to show/hide sections based on the selected page
+        function showPage(sectionId) {
+            document.querySelectorAll('.section').forEach(function(section) {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        // Function to add a task
+        function addTask(type) {
+            let taskInput, taskList, taskDate;
+            if (type === 'daily') {
+                taskInput = document.getElementById('daily-task-input');
+                taskList = document.getElementById('daily-tasks');
+                taskDate = document.getElementById('daily-task-date').value;
+            } else if (type === 'priority') {
+                taskInput = document.getElementById('priority-task-input');
+                taskList = document.getElementById('priority-tasks');
+                taskDate = document.getElementById('priority-task-date').value;
+            } else if (type === 'goals') {
+                taskInput = document.getElementById('goals-task-input');
+                taskList = document.getElementById('goals-tasks');
+                taskDate = document.getElementById('goals-task-date').value;
+            } else if (type === 'weekly') {
+                taskInput = document.getElementById('weekly-task-input');
+                taskList = document.getElementById('weekly-tasks');
+                taskDate = document.getElementById('weekly-task-date').value;
+            }
+
+            const taskText = taskInput.value.trim();
+            if (taskText === '') {
+                alert('Please enter a task!');
+                return;
+            }
+
+            const listItem = document.createElement('li');
+            listItem.className = 'task-item';
+            listItem.innerHTML = `
+                <span class="task-text">${taskText}${taskDate ? ` - Date: ${taskDate}` : ''}</span>
+                <div>
+                    <button class="edit-btn" onclick="editTask(this)">Edit</button>
+                    <button onclick="deleteTask(this)">Delete</button>
+                    <button onclick="toggleCompletion(this)">Mark as Done</button>
+                </div>
+            `;
+            taskList.appendChild(listItem);
+            taskInput.value = ''; // Clear input after adding task
+        }
+
+        // Delete task function
+        function deleteTask(button) {
+            const taskItem = button.closest('.task-item');
+            taskItem.remove();
+        }
+
+        // Edit task function
+        function editTask(button) {
+            const taskItem = button.closest('.task-item');
+            const taskText = taskItem.querySelector('.task-text');
+            const newText = prompt('Edit task:', taskText.textContent);
+            if (newText !== null) {
+                taskText.textContent = newText;
+            }
+        }
+
+        // Toggle task completion (Mark as Done)
+        function toggleCompletion(button) {
+            const taskItem = button.closest('.task-item');
+            const taskText = taskItem.querySelector('.task-text');
+            taskItem.classList.toggle('completed');
+            button.textContent = taskItem.classList.contains('completed') ? 'Undo' : 'Mark as Done';
+        }
+
+        // Show the selected date in the Date section
+        function showSelectedDate() {
+            const selectedDate = document.getElementById('date-picker').value;
+            document.getElementById('selected-date').textContent = selectedDate
+                ? `Selected Date: ${selectedDate}`
+                : 'No date selected.';
+        }
+
+        // Initial setup: Show daily schedule page by default
+        showPage('daily-schedule');
+    </script>
+
+</body>
+</html>
